@@ -1,4 +1,3 @@
 
-
 ;Disable the Settings menu
 lync/settings_menu/enabled=0
