@@ -10,5 +10,6 @@ $password = "PASSWORD"
 $loginURL = "https://$ipp/web_login.cgi"
 $sfbFields = @{LYNC_SIGNIN_ADDR="$sipaddress";LYNC_USER_NAME="$username";LYNC_PASSWORD="$password";}
 [System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true}
-$result = Invoke-WebRequest -Uri $loginurl -Method Post -Body $sfbFields -ContentType "application/x-www-form-urlencoded" -skipcertificatecheck
+$result = Invoke-WebRequest -Uri $loginurl -Method Post -Body $sfbFields -ContentType "application/x-www-form-urlencoded"
 $result.content
+
