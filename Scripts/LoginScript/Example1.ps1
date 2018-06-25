@@ -13,6 +13,6 @@ $loginURL = "https://$ipp/login.cgi"
 $sfburl = "https://$ipp/mainform.cgi/SfB_signin.htm"
 $LoginFields = @{user="$ippuser";psw="$ipppassword";}
 $sfbFields = @{SIGNINMODE="1";LYNC_SIGNIN_ADDR="$sipaddress";LYNC_USER_NAME="$username";LYNC_PASSWORD="$password";}
-Invoke-WebRequest -Uri $loginurl -Method Post -Body $LoginFields -ContentType "application/x-www-form-urlencoded" -SessionVariable ws -skipcertificatecheck
-Invoke-WebRequest -Uri $sfburl -Method Post -Body $sfbFields -ContentType "application/x-www-form-urlencoded" -wEBSESSION  $ws -skipcertificatecheck
-
+$result = Invoke-WebRequest -Uri $loginurl -Method Post -Body $LoginFields -ContentType "application/x-www-form-urlencoded" -SessionVariable ws -skipcertificatecheck
+$result = Invoke-WebRequest -Uri $sfburl -Method Post -Body $sfbFields -ContentType "application/x-www-form-urlencoded" -wEBSESSION  $ws -skipcertificatecheck
+$result.content
