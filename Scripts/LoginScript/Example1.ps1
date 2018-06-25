@@ -1,7 +1,7 @@
 
 ## IMPORTANT REQURIES POWERSHELL 6
 
-$ipp = "172.18.10.103"
+$ipp = "ipaddress"
 $ippuser = "admin"
 $ipppassword = "Password as encode string" 
 $username = "USERNAME@FQDN"
