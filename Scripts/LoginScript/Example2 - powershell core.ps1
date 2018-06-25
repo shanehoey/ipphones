@@ -7,7 +7,7 @@
 #NOTE : if you get Exception 417 the reboot the phone!
 
 #IPP Details
-$ipp         = "ipaddress"
+$ipp         = "10.1.10.22"
 
 #SfB Details
 $username    = "sipaddress@shanehoey.net"
