@@ -1,0 +1,26 @@
+[
+  {
+    "mac": "00-90-8F-00-00-00",
+    "username": "adelev@sipaddress.example.com",
+    "sipaddress": "adelev@sipaddress.example.com",
+    "password": "01000000d0854243985694038694540549320658490236894319004039216947864654765379859643068950437634318694368054318690841390864239665423654265243654378687689"
+  },
+  {
+    "mac": "00-90-8F-00-00-00",
+    "username": "debrab@sipaddress.example.com",
+    "sipaddress": "debrab@sipaddress.example.com",
+    "password": null
+  },
+  {
+    "mac": "00-90-8F-00-00-00",
+    "username": "pattif@sipaddress.example.com",
+    "sipaddress": "pattif@sipaddress.example.com",
+    "password": null
+  },
+  {
+    "mac": "00-90-8F-00-00-00",
+    "username": "pattif@sipaddress.example.com",
+    "sipaddress": "pattif@sipaddress.example.com",
+    "password": null
+  }
+]
