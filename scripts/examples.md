@@ -16,17 +16,50 @@ $ippcredential = get-credential -message "Enter the IPPhone Credentials"
 
 # Logon - Multiple Phone (JSON)
 
-The following example will log an AudioCodes IPP Phone on remotely in bult based on a JSON file. 
+The following example will log an AudioCodes IPP Phone based on a json file. It will scan the subnet given and only logon to the phone if the MAC address matches 
 
-The follwoing information is required
+### JSON File Format 
 
+The following information is required in the json file 
+ * mac - is the mac address of the IP Phone in format 00-00-00-00-00-00
+ * username - is the username of the account you want to log the phone in as  (username@domain or domain\username)
  * sipaddress - is the sip address is the credentials of the user that you want to log the phone in as
- * ippcredential - is the ipp Credential is the the username/password use to remotely log onto the IPP (default is admin/1234)
- * ipp = is the IP Address or FQDN of the IP Phone you want to log onto
+ * password to store password in JSON file ->  "mypassword" | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString and copy the resulting string to a file. _IMPORTANT_  The password is only valid when logged in as the same user/same password as it was created with.
 
-to store password in file ->  "mypassword" | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString and copy to file
-password only valid on nachine it was created with user that created it
+`
+[
+  {
+    "mac": "00-90-8F-00-00-00",
+    "username": "adelev@sipaddress.example.com",
+    "sipaddress": "adelev@sipaddress.example.com",
+    "password": "01000000d0854243985694038694540549320658490236894319004039216947864654765379859643068950437634318694368054318690841390864239665423654265243654378687689"
+  },
+  {
+    "mac": "00-90-8F-00-00-00",
+    "username": "debrab@sipaddress.example.com",
+    "sipaddress": "debrab@sipaddress.example.com",
+    "password": null
+  },
+  {
+    "mac": "00-90-8F-00-00-00",
+    "username": "pattif@sipaddress.example.com",
+    "sipaddress": "pattif@sipaddress.example.com",
+    "password": null
+  },
+  {
+    "mac": "00-90-8F-00-00-00",
+    "username": "pattif@sipaddress.example.com",
+    "sipaddress": "pattif@sipaddress.example.com",
+    "password": null
+  }
+]
+`
 
+## Script 
+Run this script but make sure you edit the for loop and $ip address 
+this will require the following inputs
+ * ippcrdential 
+ * defaultpassword
 `
 [Collections.Generic.List[Object]]$phones = get-content -path .\phones.json | convertfrom-json
 $ippcredential = New-Object System.Management.Automation.PSCredential ("admin", (ConvertTo-SecureString "1234" -AsPlainText -Force))
@@ -77,12 +110,16 @@ for ($i = 99; $i -lt 110; $i++)
 
 # Factory Default - Single phone
 
+*** Under Development *** Dont use script at the moment
+
 `
 $ippcredential = get-credential -message "Enter the IPPhone Credentials"admin
 .\set-ippfactoryDefault.ps1 -ipp 192.168.10.10 -ippcredential $ippcredential
 `
 
 # Factory Default - Multiple Phones
+
+*** Under Development *** Dont use script at the moment
 
 `
 $ippcredential = New-Object System.Management.Automation.PSCredential ("admin", (ConvertTo-SecureString "1234" -AsPlainText -Force))
@@ -93,6 +130,9 @@ for ($i = 100; $i -lt 110; $i++)
 `
 
 # Factory Default - Multiple Phones
+
+*** Under Development *** Dont use script at the moment
+
 `
 $ippcredential = New-Object System.Management.Automation.PSCredential ("admin", (ConvertTo-SecureString "1234" -AsPlainText -Force))
 $ipp = "192.168.10.12","192.168.10.13","192.168.10.14","192.168.10.15","192.168.10.16"
@@ -103,6 +143,10 @@ foreach($i in $ipp)
 `
 
 # Factory Default - Multiple Phone (JSON)
+
+
+*** Under Development *** Dont use script at the moment
+
 will scan IP address's and Factory default only phones in the json file.
 `
 [Collections.Generic.List[Object]]$phones = get-content -path .\phones.json | convertfrom-json
@@ -125,12 +169,18 @@ for ($i = 99; $i -lt 110; $i++)
 `
 
 # Reboot - Single phone
+
+*** Under Development *** Dont use script at the moment
+
 `
 $ippcredential = get-credential -message "Enter the IPPhone Credentials"
 .\set-ippreboot.ps1 -ipp 192.168.10.10 -ippcredential $ippcredential
 `
 
 # Reboot - Multiple Phones
+
+*** Under Development *** Dont use script at the moment
+
 `
 $ippcredential = New-Object System.Management.Automation.PSCredential ("admin", (ConvertTo-SecureString "1234" -AsPlainText -Force))
 $ipp = "192.168.10.12","192.168.10.13","192.168.10.14","192.168.10.15","192.168.10.16"
@@ -142,6 +192,9 @@ foreach($i in $ipp)
 
 # Reboot - Multiple Phones
 
+
+*** Under Development *** Dont use script at the moment
+
 `
 $ippcredential = New-Object System.Management.Automation.PSCredential ("admin", (ConvertTo-SecureString "1234" -AsPlainText -Force))
 for ($i = 1; $i -lt 255; $i++)
@@ -151,6 +204,9 @@ for ($i = 1; $i -lt 255; $i++)
 `
 
 # Reboot - Multiple Phone (JSON)
+
+
+*** Under Development *** Dont use script at the moment
 
 will scan IP address's and reboot only phones in the json file.
 
