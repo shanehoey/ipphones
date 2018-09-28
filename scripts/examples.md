@@ -1,9 +1,11 @@
 
-#Logon - Single Phone
+# Logon - Single Phone
+'''
 $sipaddress = get-credential -message "Enter the Sip Address Credentials"
 $ippcredential = get-credential -message "Enter the IPPhone Credentials"
 .\set-ipploginuser.ps1 -ipp 192.168.10.103 -sipaddress $sipaddress -ippcredential $ippcredential
 .\set-ipploginuser.ps1 -ipp 192.168.10.103 -sipaddress $sipaddress
+'''
 
 #Logon - Multiple Phone (JSON)
 #to store password in file ->  "mypassword" | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString and copy to file
