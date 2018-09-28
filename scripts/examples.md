@@ -3,7 +3,7 @@
 
 The following example will log an AudioCodes IPP Phone on remotely. The following information is required
 
- * _sipaddress_ - is the sip address is the credentials of the user that you want to log the phone in as
+ * *sipaddress* - is the sip address is the credentials of the user that you want to log the phone in as
  * _ippcredential_ - is the ipp Credential is the the username/password use to remotely log onto the IPP (default is admin/1234)
  * _ipp_ = is the IP Address or FQDN of the IP Phone you want to log onto
 
