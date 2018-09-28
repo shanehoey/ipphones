@@ -3,9 +3,9 @@
 
 The following example will log an AudioCodes IPP Phone on remotely. The following information is required
 
- * *sipaddress* - is the sip address is the credentials of the user that you want to log the phone in as
- * _ippcredential_ - is the ipp Credential is the the username/password use to remotely log onto the IPP (default is admin/1234)
- * _ipp_ = is the IP Address or FQDN of the IP Phone you want to log onto
+ * __sipaddress__ Is the sip address is the credentials of the user that you want to log the phone in as
+ * __ippcredential__ Is the ipp Credential is the the username/password use to remotely log onto the IPP (default is admin/1234)
+ * __ipp__ Is the IP Address or FQDN of the IP Phone you want to log onto
 
 ```
 $sipaddress = get-credential -message "Enter the Sip Address Credentials"
@@ -21,10 +21,10 @@ The following example will log an AudioCodes IPP Phone based on a json file. It 
 ### JSON File Format 
 
 The following information is required in the json file 
- * _mac_ - is the mac address of the IP Phone in format 00-00-00-00-00-00
- * _username_ - is the username of the account you want to log the phone in as  (username@domain or domain\username)
- * _sipaddress_ - is the sip address is the credentials of the user that you want to log the phone in as
- * _password_ to store password in JSON file ->  "mypassword" | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString and copy the resulting string to a file. _IMPORTANT_  The password is only valid when logged in as the same user/same password as it was created with.
+ * __mac__ is the mac address of the IP Phone in format 00-00-00-00-00-00
+ * __username__ is the username of the account you want to log the phone in as  (username@domain or domain\username)
+ * __sipaddress__ is the sip address is the credentials of the user that you want to log the phone in as
+ * __password__ to store password in JSON file ->  "mypassword" | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString and copy the resulting string to a file. _IMPORTANT_  The password is only valid when logged in as the same user/same password as it was created with.
 
 ```
 [
@@ -56,18 +56,32 @@ The following information is required in the json file
 ````
 
 ## Script 
-Run this script but make sure you edit the for loop and $ip address 
-this will require the following inputs
- * _ippcrdential_ 
- * _defaultpassword_
+To run this script you must edit the Following at a minimum 
+
+ * __ippcredential__ Credential of IP Phone, example blow users defaut usernamepassword of admin/1234
+ * __defaultpassword__ Password to log sip address account on if it is not in the file 
+ * __subnet__  subnet to scan ( exclude the last octlet ie 192.168.1.0 should be entered as 192.168.1.)
+ * __startip__ IP address to start scan at 
+ * __endip__  IP address to end scan at
 
 ```
+#imports the phones from the json file 
 [Collections.Generic.List[Object]]$phones = get-content -path .\phones.json | convertfrom-json
+
+#store the credential of the IPP 
 $ippcredential = New-Object System.Management.Automation.PSCredential ("admin", (ConvertTo-SecureString "1234" -AsPlainText -Force))
+
+#password to use if not password in the file 
 $defaultpassword = read-host -prompt "Password to use if password not in file ?" -AsSecureString 
+
+#subnet to scan 
+$subnet = "192.168.10."  #this is correct it does not include last digits
+$startip = "1"
+$endip =  "254"
+
 for ($i = 99; $i -lt 110; $i++)
 {
-    $ip = "192.168.10.$i"
+    $ip = "$subnet$i"
     Write-Verbose "Checking $IP" -verbose
     if (test-Connection -ComputerName  $ip -count 1 -Quiet) 
     {
