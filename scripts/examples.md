@@ -1,11 +1,11 @@
 
 # Logon - Single Phone
 
-The following example will log an AudioCodes IPP Phone on remotely. The follwoing information is required
+The following example will log an AudioCodes IPP Phone on remotely. The following information is required
 
- * sipaddress - is the sip address is the credentials of the user that you want to log the phone in as
- * ippcredential - is the ipp Credential is the the username/password use to remotely log onto the IPP (default is admin/1234)
- * ipp = is the IP Address or FQDN of the IP Phone you want to log onto
+ * _sipaddress_ - is the sip address is the credentials of the user that you want to log the phone in as
+ * _ippcredential_ - is the ipp Credential is the the username/password use to remotely log onto the IPP (default is admin/1234)
+ * _ipp_ = is the IP Address or FQDN of the IP Phone you want to log onto
 
 ```
 $sipaddress = get-credential -message "Enter the Sip Address Credentials"
@@ -21,10 +21,10 @@ The following example will log an AudioCodes IPP Phone based on a json file. It 
 ### JSON File Format 
 
 The following information is required in the json file 
- * mac - is the mac address of the IP Phone in format 00-00-00-00-00-00
- * username - is the username of the account you want to log the phone in as  (username@domain or domain\username)
- * sipaddress - is the sip address is the credentials of the user that you want to log the phone in as
- * password to store password in JSON file ->  "mypassword" | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString and copy the resulting string to a file. _IMPORTANT_  The password is only valid when logged in as the same user/same password as it was created with.
+ * _mac_ - is the mac address of the IP Phone in format 00-00-00-00-00-00
+ * _username_ - is the username of the account you want to log the phone in as  (username@domain or domain\username)
+ * _sipaddress_ - is the sip address is the credentials of the user that you want to log the phone in as
+ * _password_ to store password in JSON file ->  "mypassword" | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString and copy the resulting string to a file. _IMPORTANT_  The password is only valid when logged in as the same user/same password as it was created with.
 
 ```
 [
@@ -58,8 +58,8 @@ The following information is required in the json file
 ## Script 
 Run this script but make sure you edit the for loop and $ip address 
 this will require the following inputs
- * ippcrdential 
- * defaultpassword
+ * _ippcrdential_ 
+ * _defaultpassword_
 
 ```
 [Collections.Generic.List[Object]]$phones = get-content -path .\phones.json | convertfrom-json
