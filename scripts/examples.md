@@ -1,6 +1,12 @@
 
 # Logon - Single Phone
 
+The following example will log an AudioCodes IPP Phone on remotely. The follwoing information is required
+
+ * sipaddress - is the sip address is the credentials of the user that you want to log the phone in as
+ * ippcredential - is the ipp Credential is the the username/password use to remotely log onto the IPP (default is admin/1234)
+ * ipp = is the IP Address or FQDN of the IP Phone you want to log onto
+
 ```
 $sipaddress = get-credential -message "Enter the Sip Address Credentials"
 $ippcredential = get-credential -message "Enter the IPPhone Credentials"
@@ -9,6 +15,15 @@ $ippcredential = get-credential -message "Enter the IPPhone Credentials"
 ```
 
 # Logon - Multiple Phone (JSON)
+
+The following example will log an AudioCodes IPP Phone on remotely in bult based on a JSON file. 
+
+The follwoing information is required
+
+ * sipaddress - is the sip address is the credentials of the user that you want to log the phone in as
+ * ippcredential - is the ipp Credential is the the username/password use to remotely log onto the IPP (default is admin/1234)
+ * ipp = is the IP Address or FQDN of the IP Phone you want to log onto
+
 to store password in file ->  "mypassword" | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString and copy to file
 password only valid on nachine it was created with user that created it
 
