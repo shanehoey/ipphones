@@ -121,7 +121,7 @@ The following information is required in the json file
     "mac": "00-90-8F-00-00-00",
     "username": "shane@shoey.example",
     "sipaddress": "shane@shoey.example",
-    "password": "01000000d0854243985694038694540549320658490236894319004039216947864654765379859643068950437634318694368054318690841390864239665423654265243654378687689"
+    "password": null
   },
   {
     "mac": "00-90-8F-00-00-00",
@@ -135,42 +135,71 @@ The following information is required in the json file
 ## Script 
 To run this script you must edit the Following at a minimum 
 
- * __ippcredential__ Credential of IP Phone, example blow users defaut usernamepassword of admin/1234
- * __defaultpassword__ Password to log sip address account on if it is not in the file 
- * __subnet__  subnet to scan ( exclude the last octlet ie 192.168.1.0 should be entered as 192.168.1.)
- * __startip__ IP address to start scan at 
- * __endip__  IP address to end scan at
+```
+
+
+[Collections.Generic.List[Object]]$phones = get-content -path .\phones.json | convertfrom-json
+$ippcredential = New-Object System.Management.Automation.PSCredential ("admin", (ConvertTo-SecureString "1234" -AsPlainText -Force))
+$defaultpassword = read-host -prompt "Password to use if password not in file ?" -AsSecureString 
+for ($i = 130; $i -le 136; $i++)
+{
+    $ip = "172.16.18.$i"
+    if (test-ipphoneicmp -ipphone $ip )       
+    {                                       
+        if (test-ipphoneweb -ipphone $ip )
+        {
+            $websession  = new-ipphonewebsession -ipphone $ip
+            connect-ipphone -ipphone $ip -credential $ippcredential -websession $websession 
+            $macaddress = get-ipphonemacaddress -ipphone $ip -websession $websession 
+            $index = $phones.find( {$args[0].mac -eq $macaddress } ) 
+            if($index) 
+            {
+              if ($index.password -eq $null) { $sipcredential = New-Object System.Management.Automation.PSCredential ($index.username, $defaultpassword ) } else  { $sipcredential = New-Object System.Management.Automation.PSCredential ($index.username, ($index.password | ConvertTo-SecureString) )  }     
+              Invoke-ipphoneLoginUser -ipphone $ip -sipcredential $sipcredential -sipaddress $index.sipaddress -websession $websession
+              Write-verbose  "Logging in $($index.username) to  $IP" -verbose
+            }
+        }
+    }                                       
+}
+```
+
+
+# Reset all Phones in subnet  (Factory Default)
 
 ```
-#imports the phones from the json file 
-[Collections.Generic.List[Object]]$phones = get-content -path .\phones.json | convertfrom-json
-
-#store the credential of the IPP 
 $ippcredential = New-Object System.Management.Automation.PSCredential ("admin", (ConvertTo-SecureString "1234" -AsPlainText -Force))
-
-#password to use if not password in the file 
-$defaultpassword = read-host -prompt "Password to use if password not in file ?" -AsSecureString 
-
-#subnet to scan 
-$subnet = "192.168.10."  #this is correct it does not include last digits
-$startip = "1"
-$endip =  "254"
-
-for ($i = 99; $i -lt 110; $i++)
+for ($i = 130; $i -le 136; $i++)
 {
-    $ip = "$subnet$i"
-    Write-Verbose "Checking $IP" -verbose
-    if (test-Connection -ComputerName  $ip -count 1 -Quiet) 
-    {
-      $index = $phones.find( {$args[0].mac -eq ((Get-NetNeighbor -IPAddress $ip -ErrorAction SilentlyContinue).LinkLayerAddress) } ) 
-      if($index) 
-      {
-        if ($index.password -eq $null) { $index.password = $defaultpassword } else  { $index.password = $index.password | ConvertTo-SecureString  }
-        $sipaddress = New-Object System.Management.Automation.PSCredential ($index.username,$index.password )
-        Write-Verbose "Login $($index.username) onto $ip" -verbose
-        .\set-ipploginuser.ps1 -ipp $ip -ippcredential $ippcredential -sipaddress $sipaddress -username $index.username
-      }
-      Remove-Variable -name index
-    }
+    $ip = "172.16.18.$i"
+    if (test-ipphoneicmp -ipphone $ip )       
+    {                                       
+        if (test-ipphoneweb -ipphone $ip )
+        {
+            $websession  = new-ipphonewebsession -ipphone $ip
+            connect-ipphone -ipphone $ip -credential $ippcredential -websession $websession 
+            Invoke-ipphoneReset -ipphone $ip -websession $websession
+            Write-verbose -Message "Factory Default ->  $ip" -verbose
+        }
+    }                                       
+}
+```
+
+## Reboot all Phones in subnet 
+
+```
+$ippcredential = New-Object System.Management.Automation.PSCredential ("admin", (ConvertTo-SecureString "1234" -AsPlainText -Force))
+for ($i = 130; $i -le 136; $i++)
+{
+    $ip = "172.16.18.$i"
+    if (test-ipphoneicmp -ipphone $ip )       
+    {                                       
+        if (test-ipphoneweb -ipphone $ip )
+        {
+            $websession  = new-ipphonewebsession -ipphone $ip
+            connect-ipphone -ipphone $ip -credential $ippcredential -websession $websession 
+            Invoke-ipphoneReboot -ipphone $ip -websession $websession
+            Write-verbose -Message "Reset ->  $ip" -verbose
+        }
+    }                                       
 }
 ```

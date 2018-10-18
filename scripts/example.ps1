@@ -37,8 +37,8 @@ $ws5 = new-ipphonewebsession -ipphone 172.16.18.135
 [securestring]$password = "000000000200009d4f9bc823503d24d189c6e37b0addda92fdee516705564a17fea4a4e78a7e7ce49705a56d5dc8964b3bfe7a2ae959ede95e6a29" | ConvertTo-SecureString
 $ippcredential = New-Object System.Management.Automation.PSCredential ("admin", $password)
 connect-ipphone -ipphone 172.16.18.131 -username "admin" -passwordtext "1234" -websession $ws1 
-connect-ipphone -ipphone 172.16.18.132 -username "admin" -password $password  -websession $ws2 
-connect-ipphone -ipphone 172.16.18.133 -credential $ippcredential -websession $ws3 
+connect-ipphone -ipphone 172.16.18.132 -username "admin" -passwordtext "1234" -websession $ws2 
+connect-ipphone -ipphone 172.16.18.133 -username "admin" -passwordtext "1234" -websession $ws3 
 connect-ipphone -ipphone 172.16.18.134 -username "admin" -passwordtext "1234" -websession $ws4 
 connect-ipphone -ipphone 172.16.18.135 -username "admin" -passwordtext "1234" -websession $ws5
 
@@ -110,3 +110,63 @@ invoke-ipphoneLoginUser -ipphone 172.16.18.132 -websession $ws2 -Logoff
 invoke-ipphoneLoginUser -ipphone 172.16.18.133 -websession $ws3 -Logoff
 invoke-ipphoneLoginUser -ipphone 172.16.18.134 -websession $ws4 -Logoff
 invoke-ipphoneLoginUser -ipphone 172.16.18.135 -websession $ws5 -Logoff
+
+
+
+
+[Collections.Generic.List[Object]]$phones = get-content -path .\phones.json | convertfrom-json
+$ippcredential = New-Object System.Management.Automation.PSCredential ("admin", (ConvertTo-SecureString "1234" -AsPlainText -Force))
+$defaultpassword = read-host -prompt "Password to use if password not in file ?" -AsSecureString 
+for ($i = 130; $i -le 136; $i++)
+{
+    $ip = "172.16.18.$i"
+    if (test-ipphoneicmp -ipphone $ip )       
+    {                                       
+        if (test-ipphoneweb -ipphone $ip )
+        {
+            $websession  = new-ipphonewebsession -ipphone $ip
+            connect-ipphone -ipphone $ip -credential $ippcredential -websession $websession 
+            $macaddress = get-ipphonemacaddress -ipphone $ip -websession $websession 
+            $index = $phones.find( {$args[0].mac -eq $macaddress } ) 
+            if($index) 
+            {
+              if ($index.password -eq $null) { $sipcredential = New-Object System.Management.Automation.PSCredential ($index.username, $defaultpassword ) } else  { $sipcredential = New-Object System.Management.Automation.PSCredential ($index.username, ($index.password | ConvertTo-SecureString) )  }     
+              Invoke-ipphoneLoginUser -ipphone $ip -sipcredential $sipcredential -sipaddress $index.sipaddress -websession $websession
+              Write-verbose  "Logging in $($index.username) to  $IP" -verbose
+            }
+        }
+    }                                       
+}
+
+
+$ippcredential = New-Object System.Management.Automation.PSCredential ("admin", (ConvertTo-SecureString "1234" -AsPlainText -Force))
+for ($i = 130; $i -le 136; $i++)
+{
+    $ip = "172.16.18.$i"
+    if (test-ipphoneicmp -ipphone $ip )       
+    {                                       
+        if (test-ipphoneweb -ipphone $ip )
+        {
+            $websession  = new-ipphonewebsession -ipphone $ip
+            connect-ipphone -ipphone $ip -credential $ippcredential -websession $websession 
+            Invoke-ipphoneReset -ipphone $ip -websession $websession
+            Write-verbose -Message "Factory Default ->  $ip" -verbose
+        }
+    }                                       
+}
+
+$ippcredential = New-Object System.Management.Automation.PSCredential ("admin", (ConvertTo-SecureString "1234" -AsPlainText -Force))
+for ($i = 130; $i -le 136; $i++)
+{
+    $ip = "172.16.18.$i"
+    if (test-ipphoneicmp -ipphone $ip )       
+    {                                       
+        if (test-ipphoneweb -ipphone $ip )
+        {
+            $websession  = new-ipphonewebsession -ipphone $ip
+            connect-ipphone -ipphone $ip -credential $ippcredential -websession $websession 
+            Invoke-ipphoneReboot -ipphone $ip -websession $websession
+            Write-verbose -Message "Reset ->  $ip" -verbose
+        }
+    }                                       
+}
