@@ -112,8 +112,18 @@ invoke-ipphoneLoginUser -ipphone 172.16.18.134 -websession $ws4 -Logoff
 invoke-ipphoneLoginUser -ipphone 172.16.18.135 -websession $ws5 -Logoff
 
 
+#Example 1 - Simple Example 
+set-ipphoneTrustAllCertPolicy
+$ipphone = “172.16.18.135”
+$ippcredential = get-credential -Message "Credential" -UserName "admin"
+$sipaddress = “shane@shoey.xyz”
+$sipcredential  = get-credential -Message "Credential" -UserName $sipaddress
+$websession  = new-ipphonewebsession -ipphone $ipphone
+connect-ipphone -ipphone $ipphone -credential $ippcredential -websession $websession 
+Invoke-ipphoneLoginUser -ipphone $ipphone -sipcredential $sipcredential -sipaddress $sipaddress -websession $websession
 
-
+#Example 2 - Scan Subnet and log users on based on JSON File 
+set-ipphoneTrustAllCertPolicy
 [Collections.Generic.List[Object]]$phones = get-content -path .\phones.json | convertfrom-json
 $ippcredential = New-Object System.Management.Automation.PSCredential ("admin", (ConvertTo-SecureString "1234" -AsPlainText -Force))
 $defaultpassword = read-host -prompt "Password to use if password not in file ?" -AsSecureString 
@@ -138,23 +148,8 @@ for ($i = 130; $i -le 136; $i++)
     }                                       
 }
 
-
-$ippcredential = New-Object System.Management.Automation.PSCredential ("admin", (ConvertTo-SecureString "1234" -AsPlainText -Force))
-for ($i = 130; $i -le 136; $i++)
-{
-    $ip = "172.16.18.$i"
-    if (test-ipphoneicmp -ipphone $ip )       
-    {                                       
-        if (test-ipphoneweb -ipphone $ip )
-        {
-            $websession  = new-ipphonewebsession -ipphone $ip
-            connect-ipphone -ipphone $ip -credential $ippcredential -websession $websession 
-            Invoke-ipphoneReset -ipphone $ip -websession $websession
-            Write-verbose -Message "Factory Default ->  $ip" -verbose
-        }
-    }                                       
-}
-
+#Scan Subnet and reboot all IP Phones
+set-ipphoneTrustAllCertPolicy
 $ippcredential = New-Object System.Management.Automation.PSCredential ("admin", (ConvertTo-SecureString "1234" -AsPlainText -Force))
 for ($i = 130; $i -le 136; $i++)
 {
@@ -167,6 +162,24 @@ for ($i = 130; $i -le 136; $i++)
             connect-ipphone -ipphone $ip -credential $ippcredential -websession $websession 
             Invoke-ipphoneReboot -ipphone $ip -websession $websession
             Write-verbose -Message "Reset ->  $ip" -verbose
+        }
+    }                                       
+}
+
+#Scan Subnet and Factory Default all IP Phones
+set-ipphoneTrustAllCertPolicy
+$ippcredential = New-Object System.Management.Automation.PSCredential ("admin", (ConvertTo-SecureString "1234" -AsPlainText -Force))
+for ($i = 130; $i -le 136; $i++)
+{
+    $ip = "172.16.18.$i"
+    if (test-ipphoneicmp -ipphone $ip )       
+    {                                       
+        if (test-ipphoneweb -ipphone $ip )
+        {
+            $websession  = new-ipphonewebsession -ipphone $ip
+            connect-ipphone -ipphone $ip -credential $ippcredential -websession $websession 
+            Invoke-ipphoneReset -ipphone $ip -websession $websession
+            Write-verbose -Message "Factory Default ->  $ip" -verbose
         }
     }                                       
 }
