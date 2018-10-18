@@ -22,7 +22,7 @@ List all commands in IP Phone Module
 Get-Command -Module ipphone
 ```
 
-# Check SSL Trust 
+# Checking SSL Trust 
 By default your computer may not trust the SSL certifcate on the IP Phone, this command will check if your computer trusts the IP Phone SSL certificate
 
 ```
@@ -86,7 +86,7 @@ get-ipphonestatus -ipphone $ipphone -websession $websession
 
 The following example will logoff the current logged in user of an AudioCodes IPP Phone. 
 
- * __ipp__ Is the IP Address or FQDN of the IP Phone you want to log onto
+ * __ipphone__ Is the IP Address or FQDN of the IP Phone you want to log onto
  * __ippcredential__ Is the Credential(username/password) of the IP Phone (default is admin/1234)
  
 
@@ -139,6 +139,7 @@ $defaultpassword = read-host -prompt "Password to use if password not in file ?"
 for ($i = 1; $i -le 254; $i++)
 {
     $ip = "172.16.18.$i"
+    Write-Progress -Activity "Scanning subnet" -Status "IP Address -> $ip" -PercentComplete (($I/254)*100)
     if (test-ipphoneicmp -ipphone $ip )       
     {                                       
         if (test-ipphoneweb -ipphone $ip )
@@ -161,6 +162,11 @@ for ($i = 1; $i -le 254; $i++)
 
 ### Scan Subnet and reboot all IP Phones
 
+The following example will scan a subnet and reboot all IP Phones it discovers automatically
+
+The following information is required:
+ * __ippcredential__ Is the Credential(username/password) of the IP Phone (default is admin/1234)
+ 
 ```
 
 set-ipphoneTrustAllCertPolicy
@@ -168,6 +174,7 @@ $ippcredential = New-Object System.Management.Automation.PSCredential ("admin", 
 for ($i = 1; $i -le 254; $i++)
 {
     $ip = "172.16.18.$i"
+    Write-Progress -Activity "Scanning subnet" -Status "IP Address -> $ip" -PercentComplete (($I/254)*100)
     if (test-ipphoneicmp -ipphone $ip )       
     {                                       
         if (test-ipphoneweb -ipphone $ip )
@@ -184,6 +191,11 @@ for ($i = 1; $i -le 254; $i++)
 
 ### Scan Subnet and Factory Default all IP Phones
 
+The following example will scan a subnet and Factory Default (reset) all IP Phones it discovers automatically
+
+The following information is required:
+ * __ippcredential__ Is the Credential(username/password) of the IP Phone (default is admin/1234)
+ 
 ```
 
 set-ipphoneTrustAllCertPolicy
@@ -191,6 +203,7 @@ $ippcredential = New-Object System.Management.Automation.PSCredential ("admin", 
 for ($i = 1; $i -le 254; $i++)
 {
     $ip = "172.16.18.$i"
+    Write-Progress -Activity "Scanning subnet" -Status "IP Address -> $ip" -PercentComplete (($I/254)*100)
     if (test-ipphoneicmp -ipphone $ip )       
     {                                       
         if (test-ipphoneweb -ipphone $ip )
