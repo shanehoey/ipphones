@@ -34,7 +34,7 @@ $ws4 = new-ipphonewebsession -ipphone 172.16.18.134
 $ws5 = new-ipphonewebsession -ipphone 172.16.18.135 
 
 #Login to each IP Phone using username/password username/securestring or credential 
-[securestring]$password = "01000000d08c9ddf0115d1118c7a00c04fc297eb01000000d9c9d5b34fd2354c9dc43ed0f5b6eb0a000000000200000000001066000000010000200000000d8af1bb6449fc0a9d4f9bc823503d24d18b5eabb390bf526b684db4eb28f453000000000e8000000002000020000000dee194657d6f8e7f4b453c0d0ef35675b10ba033f6a61702e7e7e17e11c1b831100000004f09db2e6f33b610569ed9c6e37c85a64000000089f1a04de6dae2db0addda92fdee5167055646d7f19939a0ea4a4f3c3fe3ccf42618e81a17fea4a4e78a7e7ce49705a56d5dc8964b3bfe7a2ae959ede95e6a29" | ConvertTo-SecureString
+[securestring]$password = "000000000200009d4f9bc823503d24d189c6e37b0addda92fdee516705564a17fea4a4e78a7e7ce49705a56d5dc8964b3bfe7a2ae959ede95e6a29" | ConvertTo-SecureString
 $ippcredential = New-Object System.Management.Automation.PSCredential ("admin", $password)
 connect-ipphone -ipphone 172.16.18.131 -username "admin" -passwordtext "1234" -websession $ws1 
 connect-ipphone -ipphone 172.16.18.132 -username "admin" -password $password  -websession $ws2 
@@ -57,11 +57,11 @@ get-ipphonemacaddress -ipphone 172.16.18.134 -websession $ws4
 get-ipphonemacaddress -ipphone 172.16.18.135 -websession $ws5
 
 #Test the mac address of the IP Phone
-test-ipphonemacaddress -ipphone 172.16.18.131 -macaddress "00-90-8F-97-FD-71" -websession $ws1
-test-ipphonemacaddress -ipphone 172.16.18.132 -macaddress "00-90-8F-97-FD-70" -websession $ws2
-test-ipphonemacaddress -ipphone 172.16.18.133 -macaddress "00:90:8F:61:30:67" -websession $ws3
-test-ipphonemacaddress -ipphone 172.16.18.134 -macaddress "00908F760439" -websession $ws4
-test-ipphonemacaddress -ipphone 172.16.18.135 -macaddress "00908F98486E" -websession $ws5
+test-ipphonemacaddress -ipphone 172.16.18.131 -macaddress "00-90-8F-99-FF-71" -websession $ws1
+test-ipphonemacaddress -ipphone 172.16.18.132 -macaddress "00-90-8F-99-FF-70" -websession $ws2
+test-ipphonemacaddress -ipphone 172.16.18.133 -macaddress "00:90:8F:99:FF:67" -websession $ws3
+test-ipphonemacaddress -ipphone 172.16.18.134 -macaddress "00908F99FF39" -websession $ws4
+test-ipphonemacaddress -ipphone 172.16.18.135 -macaddress "00908F99FF6E" -websession $ws5
 test-ipphonemacaddress -ipphone 172.16.18.135 -macaddress "00-00-00-00-00-00" -websession $ws5
 
 #Get the status of the IP Phone
@@ -93,12 +93,12 @@ invoke-ipphonereset -ipphone 172.16.18.134 -websession $ws4
 invoke-ipphonereset -ipphone 172.16.18.135 -websession $ws5 
 
 #Login the IP Phone
-$sipcredential = Get-Credential -UserName adelev@shoey.xyz -Message "adelev@shoey.xyz"
-invoke-ipphoneLoginUser -ipphone 172.16.18.131 -websession $ws1 -sipaddress "adelev@shoey.xyz" -sipcredential $sipcredential
-invoke-ipphoneLoginUser -ipphone 172.16.18.132 -websession $ws2 -sipaddress "adelev@shoey.xyz" -sipcredential $sipcredential
-invoke-ipphoneLoginUser -ipphone 172.16.18.133 -websession $ws3 -sipaddress "adelev@shoey.xyz" -sipcredential $sipcredential
-invoke-ipphoneLoginUser -ipphone 172.16.18.134 -websession $ws4 -sipaddress "adelev@shoey.xyz" -sipcredential $sipcredential
-invoke-ipphoneLoginUser -ipphone 172.16.18.135 -websession $ws5 -sipaddress "adelev@shoey.xyz" -sipcredential $sipcredential
+$sipcredential = Get-Credential -UserName adelev@shoey.xyz -Message "shane@shoey.example"
+invoke-ipphoneLoginUser -ipphone 172.16.18.131 -websession $ws1 -sipaddress "shane@shoey.example" -sipcredential $sipcredential
+invoke-ipphoneLoginUser -ipphone 172.16.18.132 -websession $ws2 -sipaddress "shane@shoey.example" -sipcredential $sipcredential
+invoke-ipphoneLoginUser -ipphone 172.16.18.133 -websession $ws3 -sipaddress "shane@shoey.example" -sipcredential $sipcredential
+invoke-ipphoneLoginUser -ipphone 172.16.18.134 -websession $ws4 -sipaddress "shane@shoey.example" -sipcredential $sipcredential
+invoke-ipphoneLoginUser -ipphone 172.16.18.135 -websession $ws5 -sipaddress "shane@shoey.example" -sipcredential $sipcredential
 
 #Login the IP Phone (Cloud Login)
 invoke-ipphoneLoginUser -ipphone 172.16.18.135 -websession $ws5 -cloud
