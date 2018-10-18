@@ -3,51 +3,41 @@
 
 ### Install the IP Phone Module 
 To install the IP Phone module with PowerShellGet 
-`
+
+```
 Install-Module -Name ipphone -Scope CurrentUser
-`
+```
 
 ### Update the IP Phone Module 
 To update the IP Phone module with PowerShellGet 
 
-`
+```
 Install-Module -Name ipphone -Scope CurrentUser
-`
+```
 
 ### List Commands
 List all commands in IP Phone Module
 
-`
+```
 Get-Command -Module ipphone
-`
-
-### Avalible Commands
-
-Check that the endpoint is pingable  
 ```
-$ipphone = "192.168.10.131"
-test-ipphoneICMP -ipphone $ipphone
-test-ipphoneWeb -ipphone $ipphone
-```
-
 
 # Check SSL Trust 
-By default your computer may not trust the SSL certifcate on the IP PHone, this command will sheck if your computer trusts the IP Phone SSL certificate
+By default your computer may not trust the SSL certifcate on the IP Phone, this command will check if your computer trusts the IP Phone SSL certificate
 
 ```
 test-ipphoneTrustCertPolicy -ipphone 172.16.18.131
 ```
 
-if the  IP Phone is not trusted modify the trust cert policy (powershell core you use -skipcertificatecheck instead)
+if the  IP Phone is not trusted modify the trust cert policy (powershell core you use -skipcertificatecheck instead). Any changes are only valid for the current shell, if you close powershell the TrustAllCertPolicy will be reverted
 
 ```
 set-ipphoneTrustAllCertPolicy
 ```
 
-
 # Example Usages
 
-### Log Single IP Phone on Remotely
+### Login Single IP Phone
 
 The following example will log an AudioCodes IPP Phone on remotely. 
 
@@ -55,7 +45,6 @@ The following example will log an AudioCodes IPP Phone on remotely.
  * __ippcredential__ Is the Credential(username/password) of the IP Phone (default is admin/1234)
  * __sipaddress__ Is the sip address of the user that you want to log the phone in as
  * __sipcredential__ Is the credential(username/password) of the user that you want to log the phone in as 
-
 
 ```
 set-ipphoneTrustAllCertPolicy
@@ -71,13 +60,12 @@ connect-ipphone -ipphone $ipphone -credential $ippcredential -websession $webses
 Invoke-ipphoneLoginUser -ipphone $ipphone -sipcredential $sipcredential -sipaddress $sipaddress -websession $websession
 ```
 
-### Logon Single Phone (using Office 365 CLoud login)
+### Logon Single IP Phone (using Office 365 CLoud login)
 
 The following example will log an AudioCodes IPP Phone on remotely. 
 
  * __ipphone__ Is the IP Address or FQDN of the IP Phone you want to log onto
  * __ippcredential__ Is the Credential(username/password) of the IP Phone (default is admin/1234)
-
 
 ```
 
@@ -94,14 +82,13 @@ get-ipphonestatus -ipphone $ipphone -websession $websession
 
 ```
 
-
-### Logoff - Single Phone
+### Logoff Single IP Phone
 
 The following example will logoff the current logged in user of an AudioCodes IPP Phone. 
 
- * __ippcredential__ Is the Credential(username/password) of the IP Phone (default is admin/1234)
  * __ipp__ Is the IP Address or FQDN of the IP Phone you want to log onto
-
+ * __ippcredential__ Is the Credential(username/password) of the IP Phone (default is admin/1234)
+ 
 
 ```
 
@@ -117,7 +104,6 @@ Invoke-ipphoneLoginUser -ipphone $ipphone -logoff -websession $websession
 ### Logon - Multiple Phone (JSON)
 
 The following example will log an AudioCodes IPP Phone based on a json file. It will scan the subnet given and only logon to the phone if the MAC address matches 
-
 
 
 The following information is required in the json file 
@@ -142,15 +128,15 @@ _JSON FILE_
     "password": null
   }
 ]
-````
-
+```
+_Script_
 ```
 
 set-ipphoneTrustAllCertPolicy
 [Collections.Generic.List[Object]]$phones = get-content -path .\phones.json | convertfrom-json
 $ippcredential = New-Object System.Management.Automation.PSCredential ("admin", (ConvertTo-SecureString "1234" -AsPlainText -Force))
 $defaultpassword = read-host -prompt "Password to use if password not in file ?" -AsSecureString 
-for ($i = 130; $i -le 136; $i++)
+for ($i = 1; $i -le 254; $i++)
 {
     $ip = "172.16.18.$i"
     if (test-ipphoneicmp -ipphone $ip )       
@@ -179,7 +165,7 @@ for ($i = 130; $i -le 136; $i++)
 
 set-ipphoneTrustAllCertPolicy
 $ippcredential = New-Object System.Management.Automation.PSCredential ("admin", (ConvertTo-SecureString "1234" -AsPlainText -Force))
-for ($i = 130; $i -le 136; $i++)
+for ($i = 1; $i -le 254; $i++)
 {
     $ip = "172.16.18.$i"
     if (test-ipphoneicmp -ipphone $ip )       
@@ -202,7 +188,7 @@ for ($i = 130; $i -le 136; $i++)
 
 set-ipphoneTrustAllCertPolicy
 $ippcredential = New-Object System.Management.Automation.PSCredential ("admin", (ConvertTo-SecureString "1234" -AsPlainText -Force))
-for ($i = 130; $i -le 136; $i++)
+for ($i = 1; $i -le 254; $i++)
 {
     $ip = "172.16.18.$i"
     if (test-ipphoneicmp -ipphone $ip )       
