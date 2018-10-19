@@ -114,18 +114,18 @@ The following information is required in the json file
  * __sipaddress__ is the sip address is the credentials of the user that you want to log the phone in as
  * __password__ is the password of the Users
  
-##### Storing Password in JSON file
+#### Storing Password in JSON file
  If you are storing the password do not use cleartext instead use securestring and copy the resulting string into the json file. 
  
  `"mypassword" | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString`
  
  The password is only valid when logged in as the same user/same password as it was created with.
 
-##### Storing Clear Text Password in JSON file
+#### Storing Clear Text Password in JSON file
 Do Not do this! Storing passwords in a text file in clear text is a security risk, do not do this! 
 If you must do this then use the -cleartext parameter.
 
-##### Convert CSV to Json
+#### Convert CSV to Json
 
 if you prefer to store the file in csv format you can do the following to convert it into JSON prior to importing it. 
 
@@ -133,7 +133,7 @@ if you prefer to store the file in csv format you can do the following to conver
 get-content .\phones.csv | ConvertFrom-Csv | convertto-json | Out-File .\phones.json
 ```
 
-##### JSON FILE
+#### JSON FILE
 ```
 [
   {
@@ -151,7 +151,7 @@ get-content .\phones.csv | ConvertFrom-Csv | convertto-json | Out-File .\phones.
 ]
 ```
 
-##### Download Script
+#### Download Script
 
 NOTE:  This script is currently seperate to the module and you must download seperatly
 
@@ -164,7 +164,7 @@ NOTE:  This script is currently seperate to the module and you must download sep
 
 ### Scan Subnet and perform Maintenance Actions
 
-##### Download Script
+#### Download Script
 NOTE:  This script is currently seperate to the module and you must download seperatly
 
 [Link to Script](https://github.com/shanehoey/ipphones/blob/master/scripts/invoke-ipphoneScanMaintenanceTask/invoke-ipphoneScanMaintenanceTask.ps1)
