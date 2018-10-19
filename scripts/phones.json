@@ -1,26 +1,26 @@
 [
   {
     "mac": "00908F97FD71",
-    "username": "adelev@shoey.xyz",
-    "sipaddress": "adelev@shoey.xyz",
-    "password": null
+    "username": "adelev@shoey.example",
+    "sipaddress": "adelev@shoey.example",
+    "password": "01000000d0f5b6eb0a00000e5c5e7b46d8d5df01c995a684f8ef38c6994ff5c000000000e80000000020000200000000bed705c047ddcc90e2015af056748a7d785c917cd26d237e59a9ad0b30b174d07a5ce23a061e3ab807fc"
   },
   {
     "mac": "00908F97FD70",
-    "username": "debrab@shoey.xyz",
-    "sipaddress": "debrab@shoey.xyz",
+    "username": "debrab@shoey.example",
+    "sipaddress": "debrab@shoey.example",
     "password": null
   },
   {
     "mac": "00908F613067",
-    "username": "pattif@shoey.xyz",
-    "sipaddress": "pattif@shoey.xyz",
+    "username": "pattif@shoey.example",
+    "sipaddress": "pattif@shoey.example",
     "password": null
   },
   {
     "mac": "00908F760439",
-    "username": "leeg@shoey.xyz",
-    "sipaddress": "leeg@shoey.xyz",
+    "username": "leeg@shoey.example",
+    "sipaddress": "leeg@shoey.example",
     "password": null
   }
 ]
