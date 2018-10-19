@@ -114,6 +114,13 @@ The following information is required in the json file
  * __sipaddress__ is the sip address is the credentials of the user that you want to log the phone in as
  * __password__ to store password in JSON file ->  "mypassword" | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString and copy the resulting string to a file. _IMPORTANT_  The password is only valid when logged in as the same user/same password as it was created with.
 
+_Convert CSV to Json_
+if you prefer to store the file in csv format you can do the following to convert it into json 
+
+```
+get-content .\phones.csv | ConvertFrom-Csv | convertto-json | Out-File .\phones.json
+```
+
 _JSON FILE_
 ```
 [
