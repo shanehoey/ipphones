@@ -1,28 +1,27 @@
-$defaultpassword = read-host  -AsSecureString
-$ippuser = "admin"
-$ipppassword = read-host -AsSecureString 
 
-#reboot ALL Phones in subnet 
-.\Example-Reboot.ps1 -subnet "172.16.18." -first 130 -last 135  
-.\Example-Reboot.ps1 -subnet "172.16.18." -first 130 -last 135 -noping
-.\Example-Reboot.ps1 -subnet "172.16.18." -first 130 -last 135 -ippadmin $ippuser -ipppassword $ipppassword
+$defaultpassword = read-host  -AsSecureString -Prompt "Default password of user accounts"
+$ipppassword = read-host -AsSecureString -Prompt "Password of IP Phone"
 
-#factory Default ALL Phones in subnet
-.\Example-Reboot.ps1 -subnet "172.16.18." -first 130 -last 135 -FactoryDefault
-.\Example-Reboot.ps1 -subnet "172.16.18." -first 130 -last 135 -FactoryDefault -ippadmin $ippuser -ipppassword $ipppassword
-.\Example-Reboot.ps1 -subnet "172.16.18." -first 130 -last 135 -FactoryDefault -noping
+# Reboot ALL Phones in subnet 
+.\invoke-ipphoneScanMaintenanceTask\invoke-ipphoneScanMaintenanceTask.ps1 -subnet "172.16.18." -first 131 -last 132
+.\invoke-ipphoneScanMaintenanceTask\invoke-ipphoneScanMaintenanceTask.ps1 -subnet "172.16.18." -first 133 -last 134 -noping
+.\invoke-ipphoneScanMaintenanceTask\invoke-ipphoneScanMaintenanceTask.ps1 -subnet "172.16.18." -first 135 -last 136 -ippadmin "admin" -ipppassword $ipppassword
+
+#factory Default ALL Phones in subnet 
+.\invoke-ipphoneScanMaintenanceTask\invoke-ipphoneScanMaintenanceTask.ps1 -subnet "172.16.18." -first 131 -last 132 -FactoryDefault
+.\invoke-ipphoneScanMaintenanceTask\invoke-ipphoneScanMaintenanceTask.ps1 -subnet "172.16.18." -first 133 -last 134 -FactoryDefault -ippadmin "admin" -ipppassword $ipppassword
+.\invoke-ipphoneScanMaintenanceTask\invoke-ipphoneScanMaintenanceTask.ps1 -subnet "172.16.18." -first 135 -last 136 -FactoryDefault -noping
 
 #Log Off Phones ALL Phones in subnet
-.\Example-Reboot.ps1 -subnet "172.16.18." -first 130 -last 135 -logoff
-.\Example-Reboot.ps1 -subnet "172.16.18." -first 130 -last 135 -logoff -ippadmin $ippuser -ipppassword $ipppassword
-.\Example-Reboot.ps1 -subnet "172.16.18." -first 130 -last 135 -logoff -noping
+.\invoke-ipphoneScanMaintenanceTask\invoke-ipphoneScanMaintenanceTask.ps1 -subnet "172.16.18." -first 131 -last 132 -logoff
+.\invoke-ipphoneScanMaintenanceTask\invoke-ipphoneScanMaintenanceTask.ps1 -subnet "172.16.18." -first 133 -last 134 -logoff -ippadmin "admin" -ipppassword $ipppassword
+.\invoke-ipphoneScanMaintenanceTask\invoke-ipphoneScanMaintenanceTask.ps1 -subnet "172.16.18." -first 135 -last 136 -logoff -noping
 
-#Login with JSON
-.\Example-Login-csv-cleartext.ps1 -subnet "172.16.18." -first 130 -last 135 -file .\PRIVATE-phones.json 
-.\Example-Login-csv-cleartext.ps1 -subnet "172.16.18." -first 130 -last 135 -file .\PRIVATE-phones.json -ippadmin $ippuser -ipppassword $ipppassword -defaultpassword $defaultpassword
-.\Example-Login-csv-cleartext.ps1 -subnet "172.16.18." -first 130 -last 135 -file .\PRIVATE-phones.json -noping 
+#Login with JSON  ##3
+.\invoke-ipphoneScanLogin\invoke-ipphoneScanLogin.ps1 -subnet "172.16.18." -first 131 -last 132 -file .\PRIVATE-phones.json -verbose
+.\invoke-ipphoneScanLogin\invoke-ipphoneScanLogin.ps1 -subnet "172.16.18." -first 133 -last 134 -file .\PRIVATE-phones.json -ippadmin "admin" -ipppassword $ipppassword -defaultpassword $defaultpassword
+.\invoke-ipphoneScanLogin\invoke-ipphoneScanLogin.ps1 -subnet "172.16.18." -first 135 -last 136 -file .\PRIVATE-phones.json -noping 
 
-#Login with CSV & Clear Text Password
-.\Example-Login-csv-cleartext.ps1 -subnet "172.16.18." -first 130 -last 135 -file .\PRIVATE-phones.csv
-.\Example-Login-csv-cleartext.ps1 -subnet "172.16.18." -first 130 -last 135 -file .\PRIVATE-phones.csv -ippadmin $ippuser -ipppassword $ipppassword -defaultpassword $defaultpassword
-.\Example-Login-csv-cleartext.ps1 -subnet "172.16.18." -first 130 -last 135 -file .\PRIVATE-phones.csv -noping
+.\invoke-ipphoneScanLogin\invoke-ipphoneScanLogin.ps1 -subnet "172.16.18." -first 131 -last 132 -file .\PRIVATE-phones-clear.json -cleartext
+.\invoke-ipphoneScanLogin\invoke-ipphoneScanLogin.ps1 -subnet "172.16.18." -first 133 -last 134 -file .\PRIVATE-phones-clear.json -ippadmin "admin" -ipppassword $ipppassword -defaultpassword $defaultpassword -cleartext
+.\invoke-ipphoneScanLogin\invoke-ipphoneScanLogin.ps1 -subnet "172.16.18." -first 135 -last 136 -file .\PRIVATE-phones-clear.json -noping -cleartext
