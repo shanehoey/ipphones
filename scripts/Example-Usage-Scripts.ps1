@@ -18,9 +18,9 @@ $ipppassword = read-host -AsSecureString -Prompt "Password of IP Phone"
 .\invoke-ipphoneScanMaintenanceTask\invoke-ipphoneScanMaintenanceTask.ps1 -subnet "172.16.18." -first 135 -last 136 -logoff -noping
 
 #Login with JSON
-.\invoke-ipphoneScanLogin\invoke-ipphoneScanLogin.ps1 -subnet "172.16.18." -first 131 -last 132 -file .\PRIVATE-phones.json -verbose
-.\invoke-ipphoneScanLogin\invoke-ipphoneScanLogin.ps1 -subnet "172.16.18." -first 133 -last 134 -file .\PRIVATE-phones.json -ippadmin "admin" -ipppassword $ipppassword -defaultpassword $defaultpassword
-.\invoke-ipphoneScanLogin\invoke-ipphoneScanLogin.ps1 -subnet "172.16.18." -first 135 -last 136 -file .\PRIVATE-phones.json -noping 
+.\invoke-ipphoneScanLogin\invoke-ipphoneScanLogin.ps1 -subnet "172.16.18." -first 131 -last 132 -file .\PRIVATE-phones.json -ipppassword $ipppassword -defaultpassword $defaultpassword
+.\invoke-ipphoneScanLogin\invoke-ipphoneScanLogin.ps1 -subnet "172.16.18." -first 133 -last 134 -file .\PRIVATE-phones.json -ipppassword $ipppassword -defaultpassword $defaultpassword
+.\invoke-ipphoneScanLogin\invoke-ipphoneScanLogin.ps1 -subnet "172.16.18." -first 135 -last 136 -file .\PRIVATE-phones.json -ipppassword $ipppassword -defaultpassword $defaultpassword
 
 #Login with JSON (ClearText) - *** NOT RECOMMENDED
 .\invoke-ipphoneScanLogin\invoke-ipphoneScanLogin.ps1 -subnet "172.16.18." -first 131 -last 132 -file .\PRIVATE-phones-clear.json -cleartext

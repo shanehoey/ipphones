@@ -36,6 +36,7 @@ https://docs.shanehoey.com/ipphone/
 
 
 
+
 #Requires -Version 5.0
 
 <# 
@@ -132,7 +133,7 @@ param(
                         { 
                             if($cleartext) 
                             {
-                                Write-warning "******* ($$index.username) password was stored in cleartext this is not recommended and a security risk *******" -warningaction Continue
+                                Write-warning "******* $($index.username) password was stored in cleartext this is not recommended and a security risk *******" -warningaction Continue
                                 $sipcredential = New-Object System.Management.Automation.PSCredential ($index.username, (ConvertTo-SecureString -String $index.password -AsPlainText -Force) )
                                 write-verbose -Message "$($index.username) -> Password Found"
                             }
@@ -165,8 +166,8 @@ param(
 # SIG # Begin signature block
 # MIINCgYJKoZIhvcNAQcCoIIM+zCCDPcCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUfE4FATBhJo/PZNln4h8eCNCI
-# F2OgggpMMIIFFDCCA/ygAwIBAgIQDq/cAHxKXBt+xmIx8FoOkTANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUK1s5qKVX2HRlTDBWL5gAcTnP
+# TIegggpMMIIFFDCCA/ygAwIBAgIQDq/cAHxKXBt+xmIx8FoOkTANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgQ29kZSBTaWduaW5nIENBMB4XDTE4MDEwMzAwMDAwMFoXDTE5MDEw
@@ -226,11 +227,11 @@ param(
 # Q2VydCBTSEEyIEFzc3VyZWQgSUQgQ29kZSBTaWduaW5nIENBAhAOr9wAfEpcG37G
 # YjHwWg6RMAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkG
 # CSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEE
-# AYI3AgEVMCMGCSqGSIb3DQEJBDEWBBRQo0iay7y4kfTvw3f//widR5gJITANBgkq
-# hkiG9w0BAQEFAASCAQDORXyqIZeOHnGv3lvKekTTVJ0Jws+IRanXL1kMrVOGEQeL
-# A4NbCgDxnfIgUnlHkjmyJFq++LRT//f7HJN7sKErlHAhc8D+eBO3lud3MxrS24jC
-# 9ykihDa+UjE4oJmvQahx+xznu/+r3UgbjzcWQnfTbpcf+lrl9iWFGyrqEJeqxJzI
-# kH/fDMoY/L5OfiEhel8SpSY5hprGVBDTV+ucKMQ5e8Kgy+PdHgINr29mgJu+uCdk
-# t4zObjR7aOTi3aeU2HtpKdw50e0eg6x3CvbP5lP+PHCAJtDBVBdunwXmiqkM2eUW
-# Qqx4KVy7Qbz6lc/AzdH7dMDaW96KQKRvcp09gW1d
+# AYI3AgEVMCMGCSqGSIb3DQEJBDEWBBT6b3q+pw19chVqtWNgYacAIDiIajANBgkq
+# hkiG9w0BAQEFAASCAQBptyWfXtVgpZxsmKSni70k5OW59inlyuWHweJ9ibkp8DcB
+# +bFvJOaVZe0pRWb8dKCNDhIh3ebgMF0b05HIxClIK6B5PKJIw024rmlhshBXeEIm
+# 9nxaysMeO4kr0qY2t+p4Scog4boGJuANEKDTQsGaAOUXfRoVVpat9FPBtpIiUpf5
+# FhV9UMCpmPJbv2+3d1+crZvpG/xh5lrfz9rkkbdSRSARFhAUvpaoWpmycXnZVce9
+# HG4dYtYOXUWxsfUwY7mRlbxecPuHcutMsbGyDvrxbQPRqjVxbqapGXyqnJdzncK2
+# 8XT3RLcuMrCAcuETQFQfSClLvTO7D9sk4mu4jP/c
 # SIG # End signature block
