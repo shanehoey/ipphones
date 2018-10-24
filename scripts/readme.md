@@ -93,6 +93,7 @@ The following example will logoff the current logged in user of an AudioCodes IP
  
 
 ```
+set-ipphoneTrustAllCertPolicy
 
 $ipphone       =  “172.16.18.135”
 $ippcredential = get-credential -Message "Credential" -UserName "admin"
