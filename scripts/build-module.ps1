@@ -9,7 +9,7 @@ $cert = Get-ChildItem Cert:\CurrentUser\My -CodeSigningCert
 $cert | format-table subject,issuer
 $cert
 
-$version = "0.0.1"
+$version = "0.0.2"
 
 Update-ModuleManifest -Path ".\ipphone\ipphone.psd1" -ModuleVersion $version 
 

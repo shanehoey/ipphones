@@ -10,13 +10,15 @@
 
 class ipphoneDevice {
     [string]$ipphone
+    [ipaddress]$ipaddress
     [string]$macaddress
     [string]$serialnumber
     [pscredential]$ippCredential
     [pscredential]$sipCredential
     [string]$sipAddress
+    [string]$RegisteredSipAddress
     
-    ipphoneDevice ([string]$ipphone, [string]$macaddress, [string]$serialnumber,[pscredential]$ippCredential,[pscredential]$sipCredential,[string]$sipAddress) 
+    ipphoneDevice ([string]$ipphone, [ipaddress]$ipaddress, [string]$macaddress, [string]$serialnumber, [pscredential]$ippCredential, [pscredential]$sipCredential, [string]$sipAddress, [string]$RegisteredSipAddress) 
     {
         $this.ipphone         =  $ipphone
         $this.macaddress      =  $macaddress
@@ -24,21 +26,25 @@ class ipphoneDevice {
         $this.ippCredential   =  $ippCredential
         $this.sipCredential   =  $sipCredential
         $this.sipAddress      =  $sipAddress
+        $this.RegisteredSipAddress = $RegisteredSipAddress
     }
 
     ipphoneDevice ([string]$ipphone) 
     {
       $this.ipphone     = $ipphone
     }
+
+    ipphoneDevice () {}
+
   }
  
+  #Force TLS 1.2 on windows powershell current session only
+  if ($PSEdition -ne "Core") {[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12}
+
+#Usage Statistics please refer to https://docs.shanehoey.com/terms
 try{
-    #Usage Statistics please refer to https://docs.shanehoey.com/terms
-    $usage = (invoke-webrequest -uri "https://api.shanehoey.com/count/ipphone/" -Method Get -ErrorAction SilentlyContinue).content | convertfrom-json
-    #Version Check
-    [System.Version]$current = (Get-Module ipphone).version.tostring()
-    [System.Version]$release = $usage.count.release
-    if ($current -lt $release) {Write-verbose "New Development of Module available on github -> $current -> $release" -verbose}
+    $body =  @{ "script"="ipphone";} | ConvertTo-Json
+    Invoke-RestMethod -uri "https://api.shanehoey.com/scripts/" -Method put -body $body -ContentType "application/json" -ErrorAction SilentlyContinue | out-null
 } 
 catch{ }
 
@@ -704,12 +710,100 @@ function Invoke-ipphoneLoginUser
 
   }
 
+  function set-ipphoneProvisioning
+  {
+  
+      [CmdletBinding(ConfirmImpact = 'low',DefaultParameterSetName="dhcp")]
+      param(
+    
+          [Parameter(Mandatory = $true,    ParameterSetName='dhcp')]
+          [Parameter(Mandatory = $true,    ParameterSetName='disable')]
+          [Parameter(Mandatory = $true,    ParameterSetName='static')]
+          [Parameter(Mandatory = $true,    ParameterSetName='sfb')]
+          [string]$ipphone,
+              
 
+          [Parameter(Mandatory = $true,    ParameterSetName='dhcp')]
+          [Parameter(Mandatory = $true,    ParameterSetName='disable')]
+          [Parameter(Mandatory = $true,    ParameterSetName='static')]
+          [Parameter(Mandatory = $true,    ParameterSetName='sfb')]
+          [Microsoft.PowerShell.Commands.WebRequestSession]$websession,
+  
+          [Parameter(Mandatory = $false,    ParameterSetName='dhcp')]
+          [Parameter(Mandatory = $false,    ParameterSetName='disable')]
+          [Parameter(Mandatory = $false,    ParameterSetName='static')]
+          [Parameter(Mandatory = $false,    ParameterSetName='sfb')]
+          [switch]$returnobject
+  
+      )
+      #ASU_METHOD=0&
+      SFB_UP_SERVER=0
+      FW_URL=https%3A%2F%2Fippmgr.shanehoey.com%2Ffirmwarefiles%2F
+      NOW_FW=0
+      CFG_URL=https%3A%2F%2Fippmgr.shanehoey.com%2Fipp%2Fdhcpoption160.cfg
+      NOW_CFG=0
+      FW_DYN=0
+      CFG_DYN=0
+      OPTVAL=160
+      ASU_PERIOD=0
+      ASU_HOURS=1
+      ASU_EDTIME=0
+      ASU_EDWDAY=0
+      ASU_EDWTIME=0
+      ASU_RANDOM=120
+      SFB_ASU_METHOD=0
+      SFB_CFG_DYN=0
+      SFB_CFG_URL=https%3A%2F%2Fippmgr.shanehoey.com%2Fipp%2Fdhcpoption160.cfg
+      SFB_NOW_CFG=0
+      SFB_OPTVAL=160
+      SFB_ASU_PERIOD=0
+      SFB_ASU_HOURS=1
+      SFB_ASU_EDTIME=0
+      SFB_ASU_EDWDAY=0
+      SFB_ASU_EDWTIME=0
+      SFB_ASU_RANDOM=120
+      
+      process 
+      { 
+  
+          $Parameters = @{ }
+          $Parameters.ipphone = $ipphone
+          $Parameters.action = "/mainform.cgi/auto_provision.htm"
+          $Parameters.Method ="post"
+          if ($PsCmdlet.ParameterSetName -eq 'dhcp') 
+          {
+              $parameters.body = @{ASU_METHOD="1";}
+          }
+          elseif ($PsCmdlet.ParameterSetName -eq 'disable') 
+          {
+              $parameters.body = @{ASU_METHOD="0";}
+          }
+          elseif ($PsCmdlet.ParameterSetName -eq 'static') 
+          {
+              $parameters.body = @{ASU_METHOD="2";}
+          }
+          elseif ($PsCmdlet.ParameterSetName -eq 'sfb') 
+          {
+              $parameters.body = @{ASU_METHOD="3";}
+          }
+          $parameters.contenttype = "application/x-www-form-urlencoded" 
+          $parameters.webSession = $websession 
+  
+          $result = Invoke-ipphoneWebRequest @parameters -returnobject
+  
+          if($PSBoundParameters.returnobject) 
+              {    
+                  $result 
+              }
+          
+      }
+  
+    }
 # SIG # Begin signature block
 # MIINCgYJKoZIhvcNAQcCoIIM+zCCDPcCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUWF7AAU8v9V0QDpywZISjMcGG
-# Fa6gggpMMIIFFDCCA/ygAwIBAgIQDq/cAHxKXBt+xmIx8FoOkTANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUDG1IYu2VMomi/KqlAyr8Icv9
+# HNmgggpMMIIFFDCCA/ygAwIBAgIQDq/cAHxKXBt+xmIx8FoOkTANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgQ29kZSBTaWduaW5nIENBMB4XDTE4MDEwMzAwMDAwMFoXDTE5MDEw
@@ -769,11 +863,11 @@ function Invoke-ipphoneLoginUser
 # Q2VydCBTSEEyIEFzc3VyZWQgSUQgQ29kZSBTaWduaW5nIENBAhAOr9wAfEpcG37G
 # YjHwWg6RMAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkG
 # CSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEE
-# AYI3AgEVMCMGCSqGSIb3DQEJBDEWBBQhvxOHQpV2/563bgmqYMUk8nTJjzANBgkq
-# hkiG9w0BAQEFAASCAQAvfCXJKbtRzlIXTQpXrbooD5BUHl6OA5bSXpWwMyMjJjCL
-# iA83MWa6h47ZJsGFqoZbkl4nz2t0VeWfkaJ+lqYdQsK+yZKVsaz1PoOmYHN2W8FE
-# 0Do0bk2GsnSO4xfO/U5qd0jEkpUAhHBbbU0aUm21LlvkgPSSRda3tEyaxwy+mIlh
-# nZ7gLJRv27cljoHKPTw2xEK4Tq9UO6XASYEi1TBSeJtBSS8ADBOCKsoGWHIKZLEc
-# dDGoaTtiyNOkXdKVNX0iOYTvivHABv/zZTTOjtS1HTE5toO5/HLqbo6lz0HzBQqr
-# SAf4l9atbmG0I25DrYDlPk/FMGdLAhE0J32LnJyJ
+# AYI3AgEVMCMGCSqGSIb3DQEJBDEWBBQ0+W3LG181hPsVKpMuhEOyws9FWzANBgkq
+# hkiG9w0BAQEFAASCAQCcgXlfiFZ5RpSaR/7QVCyRxm4C0Cn/0zxr7/ooRoJqp1Gw
+# nreaIsdLvK/cegS5E00lKzxMhM6IBVOIqRhIQb9tYQQWd/JyaCSGLnUa0yHL0tbJ
+# 5SynOsO2380SnruTS8fKLlMQSa3L+/HRENOm5+wdvJuAZRWZcFXAhi9ZEoaQja7z
+# pFEz5ANUpIu+mUd8ocokzFw4qICvlERhrtVAlxvge+/h0O44XK+rDZWnW6wlEvEV
+# s2mmskqTMCqZByo1JSC3cMkPXF8sPtp9xe3OcRhI2j15ITM6BFmn8N+Yt6wEdKDY
+# 72xkT+ShndPzQlCzsUkL8ojZ8z0Ah4S46uMnLWXp
 # SIG # End signature block
