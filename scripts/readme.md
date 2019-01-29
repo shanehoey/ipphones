@@ -8,7 +8,7 @@ To install the IP Phone module with PowerShellGet
 Install-Module -Name ipphone -Scope CurrentUser
 ```
 
-![Installation](https://github.com/shanehoey/ipphones/blob/master/scripts/install.jpg)
+![Installation](https://raw.githubusercontent.com/shanehoey/ipphones/master/scripts/install.jpg)
 
 ### Update the IP Phone Module 
 To update the IP Phone module with PowerShellGet 
