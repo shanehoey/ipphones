@@ -3,7 +3,7 @@
 The AudioCodes 400HD series IP phones are easy-to-use, feature-rich IP Phones, that are perfect for Skype for Business.
 In this collection of configuration settings, powershell module, and scripts you can easily discover common configuration settings.
 
-* IP Phone PowerShell Modules 
+* [IP Phone PowerShell Modules](#ip-phones-powershell-module) 
 * IP Phone PowerShell Scripts <sub><sup>(including Reboot, Logon, Logoff, Restart, FactoryDefault support)</sup></sub>
 * IP Phone Configuration Examples
 
